@@ -20,11 +20,11 @@ and open the template in the editor.
                 //Pos 3 direccion
                 //0=Izquierda 1=Arriba 2=Derecha 3=Abajo
                 //Pos 4 = en que direccion quiere ir (Jugador)
-                [2, 2, 0, 0], //Jugador
-                [7, 10, 3], //Fantasma 1
-                [7, 11, 1], //Fantasma 2
-                [7, 12, 1], //Fantasma 3
-                [7, 13, 3] //Fantasma 4
+                [0, 0, 0, 0], //Jugador
+                [0, 0, 0], //Fantasma 1
+                [0, 0, 0], //Fantasma 2
+                [0, 0, 0], //Fantasma 3
+                [0, 0, 0] //Fantasma 4
             ];
             var tablero = [
                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -36,7 +36,7 @@ and open the template in the editor.
                 [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
                 [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                 [1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1],
-                [1, 0, 0, 0, 0 ,1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+                [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
                 [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1],
                 [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
                 [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
@@ -77,15 +77,24 @@ and open the template in the editor.
             }
             function posJPersonajes() {
                 //Terminar
-                var y = Math.floor((Math.random() * 23) + 1);
-                var x = Math.floor((Math.random() * 13) + 1);
                 var i = 0;
-                if (tablero[y][x] == 0) {
-                    personajes[i][x, y, random()];
-                }
-
+                do {
+                    var y = Math.floor((Math.random() * 28) + 1);
+                    var x = Math.floor((Math.random() * 28) + 1);
+                    if (tablero[y][x] === 0 && i > 0) {
+                        personajes[i][0]=x;
+                        personajes[i][1]=y;
+                        personajes[i][2]=random();
+                        i++;
+                    }else if(tablero[y][x] === 0 && i === 0){
+                        personajes[i][0]=x;
+                        personajes[i][1]=y;
+                        personajes[i][2]=random();
+                        personajes[i][3]=0;
+                        i++;
+                    }
+                } while (i < personajes.length);
             }
-
 
 
             function mueve() {
@@ -97,24 +106,24 @@ and open the template in the editor.
                     } else {
                         tipo = 3; //Jugador
                     }
-                    if (personajes[y][3] == 0 && tablero[personajes[y][0]][personajes[y][1] - 1] != 1) {
+                    if (personajes[y][2] == 0 && tablero[personajes[y][0]][personajes[y][1] - 1] != 1) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0]][personajes[y][1] - 1] = tipo;
                         personajes[y][1] = personajes[y][1] - 1;
-                    } else if (personajes[y][3] == 1 && tablero[personajes[y][0] + 1][personajes[y][1]] != 1) {
+                    } else if (personajes[y][2] == 1 && tablero[personajes[y][0] + 1][personajes[y][1]] != 1) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0] + 1][personajes[y][1]] = tipo;
                         personajes[y][0] = personajes[y][0] + 1;
-                    } else if (personajes[y][3] == 2 && tablero[personajes[y][0]][personajes[y][1] + 1] != 1) {
+                    } else if (personajes[y][2] == 2 && tablero[personajes[y][0]][personajes[y][1] + 1] != 1) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0]][personajes[y][1] + 1] = tipo;
                         personajes[y][1] = personajes[y][1] + 1;
-                    } else if (personajes[y][3] == 3 && tablero[personajes[y][0] - 1][personajes[y][1]] != 1) {
+                    } else if (personajes[y][2] == 3 && tablero[personajes[y][0] - 1][personajes[y][1]] != 1) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0] - 1][personajes[y][1]] = tipo;
                         personajes[y][0] = personajes[y][0] - 1;
                     } else {
-                        personajes[y][3] = random();
+                        personajes[y][2] = random();
                     }
                 }
             }
@@ -123,11 +132,11 @@ and open the template in the editor.
             function random() {
                 return Math.floor((Math.random() * 4));
             }
+            posJPersonajes();
             setInterval(function () {
-                
                 mueve();
                 pinta();
-            }, 1000); 
+            }, 1000);
 
         </script>
     </body>
