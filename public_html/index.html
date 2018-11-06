@@ -77,13 +77,29 @@ and open the template in the editor.
             }
             function posJPersonajes() {
                 var i = 0;
+                var dir = [];
                 do {
                     var y = Math.floor((Math.random() * 28) + 1);
                     var x = Math.floor((Math.random() * 28) + 1);
                     if (tablero[y][x] === 0) {
+                        //0=Izquierda 1=Arriba 2=Derecha 3=Abajo
+                        
+                        if (tablero[y][x - 1] == 0) {
+                            dir.push(0);
+                        }
+                        if (tablero[y + 1][x] == 0) {
+                            dir.push(1);
+                        }
+                        if (tablero[y][x + 1] == 0) {
+                            dir.push(2);
+                        }
+                        if (tablero[y - 1][x] == 0) {
+                            dir.push(3);
+                        }
                         personajes[i][0] = x;
                         personajes[i][1] = y;
-                        personajes[i][2] = random();
+                        personajes[i][2] = dir[Math.floor((Math.random() * dir.length))];
+                        dir = [];
                         i++;
                     }
                 } while (i < personajes.length);
