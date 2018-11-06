@@ -75,72 +75,74 @@ and open the template in the editor.
                     }
                 }
             }
+            function direccion(y, x) {
+                var dir = [];
+                if (tablero[y][x - 1] == 0) {
+                    dir.push(0);
+                }
+                if (tablero[y + 1][x] == 0) {
+                    dir.push(1);
+                }
+                if (tablero[y][x + 1] == 0) {
+                    dir.push(2);
+                }
+                if (tablero[y - 1][x] == 0) {
+                    dir.push(3);
+                }
+                return dir[Math.floor((Math.random() * dir.length))];
+            }
+            
             function posJPersonajes() {
                 var i = 0;
-                var dir = [];
                 do {
                     var y = Math.floor((Math.random() * 28) + 1);
                     var x = Math.floor((Math.random() * 28) + 1);
                     if (tablero[y][x] === 0) {
                         //0=Izquierda 1=Arriba 2=Derecha 3=Abajo
-                        
-                        if (tablero[y][x - 1] == 0) {
-                            dir.push(0);
-                        }
-                        if (tablero[y + 1][x] == 0) {
-                            dir.push(1);
-                        }
-                        if (tablero[y][x + 1] == 0) {
-                            dir.push(2);
-                        }
-                        if (tablero[y - 1][x] == 0) {
-                            dir.push(3);
-                        }
-                        personajes[i][0] = x;
-                        personajes[i][1] = y;
-                        personajes[i][2] = dir[Math.floor((Math.random() * dir.length))];
-                        dir = [];
+                        personajes[i][0] = y;
+                        personajes[i][1] = x;
+                        personajes[i][2] = direccion(y,x);
                         i++;
                     }
                 } while (i < personajes.length);
             }
-
-
+            
+            function cruce(y, x, n) {
+            }
+            
             function mueve() {
                 //Editar
                 for (var y = 0; y < personajes.length; y++) {
                     var tipo;
+                    var dir = [];
                     if (y > 0) {
                         tipo = 2; //Fantasma
                     } else {
                         tipo = 3; //Jugador
                     }
-                    if (personajes[y][2] == 0 && tablero[personajes[y][0]][personajes[y][1] - 1] != 1) {
+                    if (personajes[y][2] == 0 && tablero[personajes[y][0]][personajes[y][1] - 1] == 0) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0]][personajes[y][1] - 1] = tipo;
                         personajes[y][1] = personajes[y][1] - 1;
-                    } else if (personajes[y][2] == 1 && tablero[personajes[y][0] + 1][personajes[y][1]] != 1) {
+                    } else if (personajes[y][2] == 1 && tablero[personajes[y][0] + 1][personajes[y][1]] == 0) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0] + 1][personajes[y][1]] = tipo;
                         personajes[y][0] = personajes[y][0] + 1;
-                    } else if (personajes[y][2] == 2 && tablero[personajes[y][0]][personajes[y][1] + 1] != 1) {
+                    } else if (personajes[y][2] == 2 && tablero[personajes[y][0]][personajes[y][1] + 1] == 0) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0]][personajes[y][1] + 1] = tipo;
                         personajes[y][1] = personajes[y][1] + 1;
-                    } else if (personajes[y][2] == 3 && tablero[personajes[y][0] - 1][personajes[y][1]] != 1) {
+                    } else if (personajes[y][2] == 3 && tablero[personajes[y][0] - 1][personajes[y][1]] == 0) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0] - 1][personajes[y][1]] = tipo;
                         personajes[y][0] = personajes[y][0] - 1;
                     } else {
-                        personajes[y][2] = random();
+                        personajes[y][2] = direccion(personajes[y][0],personajes[y][1]);
                     }
                 }
             }
 
 
-            function random() {
-                return Math.floor((Math.random() * 4));
-            }
             posJPersonajes();
             setInterval(function () {
                 mueve();
