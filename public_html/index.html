@@ -91,7 +91,25 @@ and open the template in the editor.
                 }
                 return dir[Math.floor((Math.random() * dir.length))];
             }
-            
+
+            function direccionCruces(y, x, n) {
+                var dir = [];
+                if (tablero[y][x - 1] == 0 && n != 2) {
+                    dir.push(0);
+                }
+                if (tablero[y + 1][x] == 0 && n != 3) {
+                    dir.push(1);
+                }
+                if (tablero[y][x + 1] == 0 && n != 0) {
+                    dir.push(2);
+                }
+                if (tablero[y - 1][x] == 0 && n != 1) {
+                    dir.push(3);
+                }
+                return dir[Math.floor((Math.random() * dir.length))];
+            }
+
+
             function posJPersonajes() {
                 var i = 0;
                 do {
@@ -101,15 +119,15 @@ and open the template in the editor.
                         //0=Izquierda 1=Arriba 2=Derecha 3=Abajo
                         personajes[i][0] = y;
                         personajes[i][1] = x;
-                        personajes[i][2] = direccion(y,x);
+                        personajes[i][2] = direccion(y, x);
                         i++;
                     }
                 } while (i < personajes.length);
             }
-            
+
             function cruce(y, x, n) {
             }
-            
+
             function mueve() {
                 //Editar
                 for (var y = 0; y < personajes.length; y++) {
@@ -124,20 +142,24 @@ and open the template in the editor.
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0]][personajes[y][1] - 1] = tipo;
                         personajes[y][1] = personajes[y][1] - 1;
+                        personajes[y][2] = direccionCruces(personajes[y][0], personajes[y][1], personajes[y][2]);
                     } else if (personajes[y][2] == 1 && tablero[personajes[y][0] + 1][personajes[y][1]] == 0) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0] + 1][personajes[y][1]] = tipo;
                         personajes[y][0] = personajes[y][0] + 1;
+                        personajes[y][2] = direccionCruces(personajes[y][0], personajes[y][1], personajes[y][2]);
                     } else if (personajes[y][2] == 2 && tablero[personajes[y][0]][personajes[y][1] + 1] == 0) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0]][personajes[y][1] + 1] = tipo;
                         personajes[y][1] = personajes[y][1] + 1;
+                        personajes[y][2] = direccionCruces(personajes[y][0], personajes[y][1], personajes[y][2]);
                     } else if (personajes[y][2] == 3 && tablero[personajes[y][0] - 1][personajes[y][1]] == 0) {
                         tablero[personajes[y][0]][personajes[y][1]] = 0;
                         tablero[personajes[y][0] - 1][personajes[y][1]] = tipo;
                         personajes[y][0] = personajes[y][0] - 1;
+                        personajes[y][2] = direccionCruces(personajes[y][0], personajes[y][1], personajes[y][2]);
                     } else {
-                        personajes[y][2] = direccion(personajes[y][0],personajes[y][1]);
+                        personajes[y][2] = direccion(personajes[y][0], personajes[y][1]);
                     }
                 }
             }
