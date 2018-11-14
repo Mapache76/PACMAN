@@ -11,6 +11,17 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body id="all">
+
+        <!-- Imatges que farem servir en el nostre espai de dibuix, estan ocultades -->
+        <img src="pared.jpg"    id="pared"    style="display: none;">
+        <img src="pacman.png"     id="pacman"     style="display: none;">
+        <img src="fantasma.png"   id="fantasma"   style="display: none;">
+        <img src="camino.jpg"   id="camino"   style="display: none;">
+
+        <!-- Espai de dibuix -->
+        <canvas id="area" width="750" height="750"></canvas>
+
+
         <script>
 
             var element = document.getElementById("all");
@@ -59,26 +70,40 @@ and open the template in the editor.
                 [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
             function pinta() {
-                document.body.innerHTML = ""; //Limpia el cuerpo de la pagina
+                var canvas = document.getElementById("area");
+                var ctx = canvas.getContext('2d');
+                var img;
+
+                //document.body.innerHTML = ""; //Limpia el cuerpo de la pagina
+
                 for (var y = 0; y < tablero.length; y++) {
                     for (var x = 0; x < tablero[y].length; x++) {
                         if (tablero[y][x] == 1 && x != tablero[y].length - 1) {
-                            document.write("█");
+                            //document.write("█");
+                            img = document.getElementById("pared");
                         } else if (tablero[y][x] == 0) {
-                            document.write("<font color=\"white\">█<\/font>");
+                            //document.write("<font color=\"white\">█<\/font>");
+                            img = document.getElementById("camino");
                         } else if (tablero[y][x] == 2) {
-                            document.write("<font color=\"red\">█<\/font>"); //Fantasma
+                            //document.write("<font color=\"red\">█<\/font>"); //Fantasma
+                            img = document.getElementById("fantasma");
                         } else if (tablero[y][x] == 3) {
-                            document.write("<font color=\"blue\">█<\/font>"); //Jugador
+                            //document.write("<font color=\"blue\">█<\/font>"); //Jugador
+                            img = document.getElementById("pacman");
+                            //ctx.rotate(90);
                         } else {
-                            document.write("█<br>");
+                            img = document.getElementById("pared");
+                            //document.write("█<br>");
                         }
+                        ctx.drawImage(img, y * 25, x * 25, 25, 25);
                     }
                 }
-                document.write("PosJug Y=" + personajes[0][0] + " X=" + personajes[0][1] + " dir=" + personajes[0][2] + " dirJug=" + personajes[0][3] + " Realizado=" + realizado + "<br>");
-                document.write("PosFant1 Y=" + personajes[1][0] + " X=" + personajes[1][1] + " dir=" + personajes[1][2] + "<br>");
-                document.write("PosFant2 Y=" + personajes[2][0] + " X=" + personajes[2][1] + " dir=" + personajes[2][2] + "<br>");
-                document.write("PosFant3 Y=" + personajes[3][0] + " X=" + personajes[3][1] + " dir=" + personajes[3][2] + "<br>");
+                /*
+                 document.write("PosJug Y=" + personajes[0][0] + " X=" + personajes[0][1] + " dir=" + personajes[0][2] + " dirJug=" + personajes[0][3] + " Realizado=" + realizado + "<br>");
+                 document.write("PosFant1 Y=" + personajes[1][0] + " X=" + personajes[1][1] + " dir=" + personajes[1][2] + "<br>");
+                 document.write("PosFant2 Y=" + personajes[2][0] + " X=" + personajes[2][1] + " dir=" + personajes[2][2] + "<br>");
+                 document.write("PosFant3 Y=" + personajes[3][0] + " X=" + personajes[3][1] + " dir=" + personajes[3][2] + "<br>");
+                 */
             }
             function direccion(y, x) {
                 var dir = [];
@@ -147,7 +172,6 @@ and open the template in the editor.
                     case 83:
                         personajes[0][3] = 3;//s
                         break;
-
                 }
             }
 
@@ -213,12 +237,12 @@ and open the template in the editor.
                     } else {
                         personajes[y][2] = direccion(personajes[y][0], personajes[y][1]);
                     }
-                    chocque(y)
+                    choque(y)
                 }
                 pinta();
             }
 
-            function chocque(n) {
+            function choque(n) {
                 if (n !== 0 && (personajes[0][0] === personajes[n][0]) && (personajes[0][1] === personajes[n][1])) {
                     alert("Eliminado");
                     clearInterval(todo);
